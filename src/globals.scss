@@ -1,0 +1,56 @@
+@import url('https://fonts.googleapis.com/css2?family=Metal+Mania&display=swap');
+
+$gird-gap: 1rem;
+
+.wrapper {
+  max-width: 1600px;
+  width: 80%;
+  margin: 0 auto;
+
+  h1 {
+    font-family: 'Metal Mania', cursive;
+    font-size: 3rem;
+  }
+
+  form {
+    width: 60%;
+    margin: 0 auto;
+  }
+}
+
+.navigator {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-size: 1rem;
+  font-style: italic;
+  color: grey;
+  margin-bottom: 1rem;
+
+  small {
+    display: inline-block;
+    padding: .5rem 1rem .35rem 1rem;
+    font-size: 2rem;
+    cursor: pointer;
+
+    &:hover {
+      color: black;
+    }
+
+    &[class="star"]:hover {
+      color: #FFD700;
+    }
+  }
+}
+
+.grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: flex-start;
+
+  .movie-card {
+    margin: $gird-gap;
+    width: calc(100% / 4 - ($gird-gap * 2)); // because margin is from both sides of element
+  }
+}
