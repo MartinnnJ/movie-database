@@ -4,6 +4,7 @@ import SearchBar from './components/SearchBar';
 import { getMoviesByTitle } from './api/fetch-movies';
 import { addMovies, getNewMoviesList, emptyMoviesList } from './store/slices/moviesSlice';
 import { useRef, useState } from 'react';
+import { Routes, Route } from 'react-router-dom';
 
 function App() {
   const [fetchingStatus, setFetchingStatus] = useState({ error: false, isLoadingNew: false, isLoadingAdd: false });

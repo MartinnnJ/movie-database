@@ -1,3 +1,4 @@
+import { emptyMoviesList } from './moviesSlice';
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
@@ -12,6 +13,11 @@ export const searchSlice = createSlice({
       state.value = action.payload;
     },
   },
+  extraReducers: (builder) => {
+    builder.addCase(emptyMoviesList, (state) => {
+      state.value = '';
+    });
+  }
 })
 
 export const { searchInputChange } = searchSlice.actions;
