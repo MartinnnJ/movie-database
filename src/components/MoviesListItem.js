@@ -1,3 +1,5 @@
+import { TbZoomQuestion } from "react-icons/tb";
+
 const titleLengthReducer = str => {
   const maxLengthLimit = 30;
   if (maxLengthLimit < str.length) {
@@ -15,6 +17,7 @@ function MoviesListItem({ poster, title, year }) {
     <div className="card movie-card">
       <div className="card-image">
         <figure className="image">
+          <TbZoomQuestion className="zoom-icon" />
           <img src={imgSrc} alt="Poster" />
         </figure>
       </div>

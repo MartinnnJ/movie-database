@@ -3,6 +3,7 @@ import MoviesListItem from "./MoviesListItem";
 import { emptyMoviesList } from "../store/slices/moviesSlice";
 import { BsFillTrashFill, BsStar } from "react-icons/bs";
 import { useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
 
 const calcNextPageNumber = (total, currMoviesLength) => {
   const maxPagesCount = Math.ceil(total / 10) || 1;
@@ -33,7 +34,9 @@ function MoviesList({ fetchingStatus, movies, totalResults, onBtnClick }) {
     renderedContent = <div className="has-text-centered is-size-3">Loading...</div>;
   } else {
     renderedContent = movies.map(movie => (
-      <MoviesListItem key={movie.imdbID} poster={movie.Poster} title={movie.Title} year={movie.Year} />
+      <Link key={movie.imdbID} to={`/details/${movie.imdbID}`}>
+        <MoviesListItem poster={movie.Poster} title={movie.Title} year={movie.Year} />
+      </Link>
     ));
   }
 
@@ -42,11 +45,11 @@ function MoviesList({ fetchingStatus, movies, totalResults, onBtnClick }) {
       <div className="navigator">
         <div>Total Results Found: <strong>{totalResults}</strong></div>
         <div className="links">
-          <small className="bin" onClick={() => dispatch(emptyMoviesList())}>
+          <small onClick={() => dispatch(emptyMoviesList())}>
             <BsFillTrashFill />
           </small>
-          <small className="star">
-            <BsStar />
+          <small>
+            <Link to="/favorites"><BsStar /></Link>
           </small>
         </div>
       </div>
