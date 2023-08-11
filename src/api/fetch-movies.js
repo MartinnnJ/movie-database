@@ -14,4 +14,14 @@ export const getMoviesByTitle = async (title, pageNum = 1) => {
   return response;
 };
 
-export const getMovieDetailById = async id => {};
+export const getMovieDetailById = async id => {
+  const response = await axios.get(`http://omdbapi.com`, {
+    params: {
+      apikey: API_KEY,
+      i: id,
+      plot: 'full'
+    }
+  }).then(data => { return data.data })
+
+  return response;
+};

@@ -1,5 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Metal+Mania&display=swap');
 
+* {
+  box-sizing: border-box;
+}
+
+*::after,
+*::before {
+  box-sizing: inherit;
+}
+
 $gird-gap: 1rem;
 
 .wrapper {

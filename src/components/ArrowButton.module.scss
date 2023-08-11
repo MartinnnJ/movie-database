@@ -1,0 +1,17 @@
+$bulma-color: #00d1b2;
+
+.btn {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  padding: .5rem 1rem;
+  border-radius: 50%;
+  font-size: 2rem;
+  color: #fff;
+  background-color: $bulma-color;
+  cursor: pointer;
+
+  &:hover {
+    background-color: darken($bulma-color, 5%);
+  }
+}

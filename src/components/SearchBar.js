@@ -25,6 +25,7 @@ function SearchBar({ onSubmit, value }) {
           value={value}
           ref={inputRef}
           placeholder="Search..."
+          autoFocus
         />
       </div>
       <button className="button is-primary">Search</button>

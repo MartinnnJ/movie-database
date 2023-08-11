@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import MoviesListItem from "./MoviesListItem";
 import { emptyMoviesList } from "../store/slices/moviesSlice";
 import { BsFillTrashFill, BsStar } from "react-icons/bs";
@@ -17,6 +17,7 @@ const calcNextPageNumber = (total, currMoviesLength) => {
 function MoviesList({ fetchingStatus, movies, totalResults, onBtnClick }) {
   const dispatch = useDispatch();
   const [disabled, setIsDisabled] = useState(true);
+  const scrollRef = useRef();
   const nextPageRef = calcNextPageNumber(totalResults, movies.length);
   const classNameString = `box ${fetchingStatus.error || fetchingStatus.isLoadingNew ? '' : 'grid'}`;
   let renderedContent;
@@ -28,13 +29,18 @@ function MoviesList({ fetchingStatus, movies, totalResults, onBtnClick }) {
     }
   }, [movies.length, totalResults]);
 
+  const linkClickHandler = () => {
+    const currScrollPosition = document.documentElement.scrollTop;
+    scrollRef.current = currScrollPosition;
+  }
+
   if (fetchingStatus.error) {
     renderedContent = <div className="has-text-centered is-size-3"><strong>Error! No movies found</strong></div>
   } else if (fetchingStatus.isLoadingNew) {
     renderedContent = <div className="has-text-centered is-size-3">Loading...</div>;
   } else {
     renderedContent = movies.map(movie => (
-      <Link key={movie.imdbID} to={`/details/${movie.imdbID}`}>
+      <Link key={movie.imdbID} to={`/details/${movie.imdbID}`} onClick={linkClickHandler} state={{ movieId: movie.imdbID, prevScrollPosition: scrollRef }}>
         <MoviesListItem poster={movie.Poster} title={movie.Title} year={movie.Year} />
       </Link>
     ));
