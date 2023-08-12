@@ -1,13 +1,5 @@
 import { TbZoomQuestion } from "react-icons/tb";
-
-const titleLengthReducer = str => {
-  const maxLengthLimit = 30;
-  if (maxLengthLimit < str.length) {
-    const newStr = str.slice(0, maxLengthLimit + 2);
-    return `${newStr}...`;
-  }
-  return str;
-}
+import { titleLengthReducer } from "../helpers";
 
 function MoviesListItem({ poster, title, year }) {
   const imgSrc = poster === 'N/A' ? 'https://bulma.io/images/placeholders/320x480.png' : poster;

@@ -3,7 +3,7 @@ import SearchBar from '../components/SearchBar';
 import { useDispatch, useSelector } from 'react-redux';
 import { addMovies, getNewMoviesList, emptyMoviesList } from '../store/slices/moviesSlice';
 import { useEffect, useState } from 'react';
-import { getMoviesByTitle } from '../api/fetch-movies';
+import { getMoviesByTitle } from '../helpers';
 import throttle from 'lodash.throttle';
 import ArrowButton from '../components/ArrowButton';
 import { useLocation } from 'react-router-dom';
@@ -43,11 +43,11 @@ function SearchPage() {
   useEffect(() => {
     if (submitBtnClicked > 0 && searchValueRef) {
       window.scrollTo({
-        top: locationData.state.scrollTo,
+        top: locationData.state,
         left: 0,
       })
     }
-  }, [locationData.state.scrollTo])
+  }, [locationData.state])
 
   const onFormSubmit = async e => {
     e.preventDefault();

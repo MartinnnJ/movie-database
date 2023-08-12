@@ -1,16 +1,22 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { getMovieDetailById } from "../api/fetch-movies";
-import styles from './MovieDetailPage.module.scss';
+import { getMovieDetailById, writeDataToLS, deleteDataInLS } from "../helpers";
 import { useDispatch, useSelector } from "react-redux";
-import { clearMovieDetails, getMovieDetails } from "../store/slices/moviesSlice";
-import { BsStar, BsStarFill } from "react-icons/bs";
+import { clearMovieDetails, getMovieDetails, addMovieToFavorites, removeMovieFromFavorites } from "../store/slices/moviesSlice";
+import LoadingSpinner from "../components/LoadingSpinner";
+import FavoriteButton from "../components/FavoriteButton";
+import styles from './MovieDetailPage.module.scss';
+
+let allFavoritesMoviesSnap;
 
 function MovieDetailPage() {
   const [isFetching, setIsFetching] = useState(false);
+  const [favoriteBtnValue, setFavoriteBtnValue] = useState(false);
   const locationData = useLocation(); // getting Link state value, where movie id and prev. scroll position is stored
   const prevScrollPosition = locationData.state.prevScrollPosition.current;
   const selectedMovie = useSelector(state => state.movies.selectedMovie);
+  const allFavoritesMovies = useSelector(state => state.movies.favoriteMovies);
+  allFavoritesMoviesSnap = [...allFavoritesMovies];
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -19,6 +25,8 @@ function MovieDetailPage() {
       setIsFetching(prevState => !prevState);
       const result = await getMovieDetailById(movieId);
       dispatch(getMovieDetails(result));
+      const isSelectedMovieInFavorites = allFavoritesMoviesSnap.some(movie => movie.imdbID === result.imdbID);
+      setFavoriteBtnValue(isSelectedMovieInFavorites);
       setIsFetching(prevState => !prevState);
     })()
 
@@ -27,22 +35,35 @@ function MovieDetailPage() {
     }
   }, [locationData.state.movieId, dispatch]);
 
+  const onFavoriteBtnClick = btnState => {
+    if (!btnState) {
+      const newMovie = {
+        imdbID: selectedMovie.imdbID,
+        title: selectedMovie.Title,
+        year: selectedMovie.Year,
+        type: selectedMovie.Type
+      }
+      dispatch(addMovieToFavorites([newMovie]));
+      writeDataToLS(newMovie);
+    } else {
+      dispatch(removeMovieFromFavorites(selectedMovie.imdbID));
+      deleteDataInLS(selectedMovie.imdbID);
+    }
+    setFavoriteBtnValue(prevState => !prevState);
+  }
+
   return (
     <>
       <div className={styles['navigation']}>
-        <Link to="/" state={{ scrollTo: prevScrollPosition }}> &lt; Back</Link>
+        <Link to="/" state={`${prevScrollPosition}`}>&lt; Back</Link>
         <Link to="/favorites">Favorites</Link>
       </div>
 
       {isFetching || !selectedMovie?.Title ? (
-        <div className="has-text-centered is-size-3">Loading...</div>
+        <LoadingSpinner />
       ) : (
         <div className={styles['movie-details']}>
-
-          <small className={styles['movie-details__favorites']}>
-            <BsStar className={styles['movie-details__favorites--add']} />
-            {/* <BsStarFill className={styles['movie-details__favorites--remove']} /> */}
-          </small>
+          <FavoriteButton type={favoriteBtnValue} onBtnClick={onFavoriteBtnClick} />
 
           <figure className={styles['movie-details__poster']}>
             <img src={selectedMovie.Poster} alt="Poster" />

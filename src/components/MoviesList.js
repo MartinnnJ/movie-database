@@ -1,20 +1,14 @@
 import { useEffect, useRef, useState } from "react";
 import MoviesListItem from "./MoviesListItem";
 import { emptyMoviesList } from "../store/slices/moviesSlice";
+import { calcNextPageNumber } from "../helpers";
 import { BsFillTrashFill, BsStar } from "react-icons/bs";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-
-const calcNextPageNumber = (total, currMoviesLength) => {
-  const maxPagesCount = Math.ceil(total / 10) || 1;
-  const nextPage = (currMoviesLength / 10) + 1;
-  if (maxPagesCount >= nextPage) {
-    return nextPage;
-  }
-  return maxPagesCount;
-}
+import LoadingSpinner from "./LoadingSpinner";
 
 function MoviesList({ fetchingStatus, movies, totalResults, onBtnClick }) {
+  const favoriteMoviesCount = useSelector(state => state.movies.favoriteMovies.length);
   const dispatch = useDispatch();
   const [disabled, setIsDisabled] = useState(true);
   const scrollRef = useRef();
@@ -37,7 +31,7 @@ function MoviesList({ fetchingStatus, movies, totalResults, onBtnClick }) {
   if (fetchingStatus.error) {
     renderedContent = <div className="has-text-centered is-size-3"><strong>Error! No movies found</strong></div>
   } else if (fetchingStatus.isLoadingNew) {
-    renderedContent = <div className="has-text-centered is-size-3">Loading...</div>;
+    renderedContent = <LoadingSpinner />;
   } else {
     renderedContent = movies.map(movie => (
       <Link key={movie.imdbID} to={`/details/${movie.imdbID}`} onClick={linkClickHandler} state={{ movieId: movie.imdbID, prevScrollPosition: scrollRef }}>
@@ -55,7 +49,10 @@ function MoviesList({ fetchingStatus, movies, totalResults, onBtnClick }) {
             <BsFillTrashFill />
           </small>
           <small>
-            <Link to="/favorites"><BsStar /></Link>
+            <Link to="/favorites">
+              <BsStar />
+              <span className="is-size-5 ml-2">({favoriteMoviesCount})</span>
+            </Link>
           </small>
         </div>
       </div>
@@ -66,7 +63,7 @@ function MoviesList({ fetchingStatus, movies, totalResults, onBtnClick }) {
 
       <div className="has-text-centered mb-5">
         {fetchingStatus.isLoadingAdd ? (
-          <div className="has-text-centered is-size-3">Loading...</div>
+          <LoadingSpinner />
         ) : (
           <button
             className="button is-primary"

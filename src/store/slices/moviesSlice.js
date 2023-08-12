@@ -4,6 +4,7 @@ const initialState = {
   movies: [],
   totalResults: 0,
   selectedMovie: undefined,
+  favoriteMovies: []
 };
 
 export const moviesSlice = createSlice({
@@ -28,10 +29,22 @@ export const moviesSlice = createSlice({
     },
     clearMovieDetails: (state) => {
       state.selectedMovie = undefined;
-    }
-  },
+    },
+    addMovieToFavorites: (state, action) => {
+      if (action.payload.length > 1) {
+        state.favoriteMovies.push(...action.payload);
+      } else {
+        state.favoriteMovies.push({ ...action.payload[0] });
+      }
+    },
+    removeMovieFromFavorites: (state, action) => {
+      const movieId = action.payload;
+      const index = state.favoriteMovies.findIndex(obj => obj.imdbID === movieId);
+      state.favoriteMovies.splice(index, 1);
+    },
+  }
 })
 
-export const { getNewMoviesList, addMovies, emptyMoviesList, getMovieDetails, clearMovieDetails } = moviesSlice.actions;
+export const { getNewMoviesList, addMovies, emptyMoviesList, getMovieDetails, clearMovieDetails, addMovieToFavorites, removeMovieFromFavorites } = moviesSlice.actions;
 
 export default moviesSlice.reducer;
