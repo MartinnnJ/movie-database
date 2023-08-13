@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-// import { FiExternalLink } from "react-icons/fi";
+import { FiExternalLink } from "react-icons/fi";
 import styles from "./FavoritePage.module.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { removeMovieFromFavorites } from "../store/slices/moviesSlice";
@@ -22,10 +22,11 @@ function FavoritePage() {
       <h2 className={styles['page-header']}>Favorite Movies</h2>
       <div className={styles['navigation']}>
         <Link onClick={() => navigate(-1)}>&lt; Back</Link>
+        <Link to="/">Home</Link>
       </div>
 
       {favoriteMovies.length === 0 ? (
-        !data ? <div className="has-text-centered is-size-3"><strong>Error! No movies found</strong></div> : 
+        !data ? <div className="has-text-centered is-size-3"><strong>Nothing to display</strong></div> : 
         <LoadingSpinner />
       ) : (
         <table className={styles.table}>
@@ -35,7 +36,7 @@ function FavoritePage() {
               <th>Title</th>
               <th>Year</th>
               <th>Type</th>
-              {/* <th>Details</th> */}
+              <th>Details</th>
               <th>.</th>
             </tr>
           </thead>
@@ -48,7 +49,7 @@ function FavoritePage() {
                   <td><strong>{movie.title}</strong></td>
                   <td>{movie.year}</td>
                   <td>{movie.type}</td>
-                  {/* <td><FiExternalLink /></td> */}
+                  <td><Link to={`/details/${movie.imdbID}`} state={movie.imdbID}><FiExternalLink /></Link></td>
                   <td>
                     <button data-id={movie.imdbID} onClick={e => trashBtnClickHandler(e)}>Delete</button>
                   </td>

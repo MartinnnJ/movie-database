@@ -6,22 +6,18 @@ import { useEffect, useState } from 'react';
 import { getMoviesByTitle } from '../helpers';
 import throttle from 'lodash.throttle';
 import ArrowButton from '../components/ArrowButton';
-import { useLocation } from 'react-router-dom';
 
 let searchValueRef = ''; // reference to search value state
-let submitBtnClicked = 0;
 let loadMoreBtnClicked = 0;
 let arrowBtnAppearPoint = undefined;
 
 function SearchPage() {
   const [fetchingStatus, setFetchingStatus] = useState({ error: false, isLoadingNew: false, isLoadingAdd: false });
   const [isArrowBtnVisible, setIsArrowBtnVisible] = useState(false);
-  const locationData = useLocation();
   const searchValue = useSelector(state => state.search.value);
   const data = useSelector(state => state.movies);
+  const scrollValue = useSelector(state => state.scroll.value);
   const dispatch = useDispatch();
-
-  console.log('Scroll To:', locationData.state);
 
   const handleScroll = throttle(() => {
     if (arrowBtnAppearPoint) {
@@ -43,13 +39,16 @@ function SearchPage() {
   }, [handleScroll]);
 
   useEffect(() => {
-    if (submitBtnClicked > 0 && searchValueRef) {
+    const scrollHeight = document.documentElement.scrollHeight;
+    const clientHeight = document.documentElement.clientHeight;
+
+    if (scrollValue > 0 && scrollHeight > clientHeight) {
+      console.log('Now Scroll To:', scrollValue);
       window.scrollTo({
-        top: locationData.state,
-        left: 0,
+        top: +scrollValue,
       })
     }
-  }, [locationData.state])
+  }, [scrollValue])
 
   const onFormSubmit = async e => {
     e.preventDefault();
@@ -62,11 +61,10 @@ function SearchPage() {
         return { ...prevState, error: true, isLoadingNew: !prevState.isLoadingNew }
       })
       dispatch(emptyMoviesList());
-      return; // !
+      return;
     }
     dispatch(getNewMoviesList(result));
     searchValueRef = searchValue;
-    submitBtnClicked += 1;
     loadMoreBtnClicked = 0;
     arrowBtnAppearPoint = undefined;
     setFetchingStatus(prevState => {

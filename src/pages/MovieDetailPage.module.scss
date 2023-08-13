@@ -1,9 +1,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
 
+.page-header {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 600;
+}
+
 .navigation {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 2rem;
+  padding: 2rem 0;
 }
 
 .movie-details {
@@ -21,6 +27,7 @@
   &__desciption {
     padding: 1rem;
     padding-right: 3rem;
+    margin-bottom: 5rem;
 
     .header {
       &__title {

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { getMovieDetailById, writeDataToLS, deleteDataInLS } from "../helpers";
 import { useDispatch, useSelector } from "react-redux";
 import { clearMovieDetails, getMovieDetails, addMovieToFavorites, removeMovieFromFavorites } from "../store/slices/moviesSlice";
@@ -11,21 +11,24 @@ let allFavoritesMoviesSnap;
 
 function MovieDetailPage() {
   const [isFetching, setIsFetching] = useState(false);
+  const [isError, setIsError] = useState(false);
   const [favoriteBtnValue, setFavoriteBtnValue] = useState(false);
-  const locationData = useLocation(); // getting Link state value, where movie id and prev. scroll position is stored
-  const prevScrollPosition = locationData.state.prevScrollPosition.current;
+  const navigate = useNavigate();
+  const locationData = useLocation(); // getting Link state value
   const selectedMovie = useSelector(state => state.movies.selectedMovie);
   const allFavoritesMovies = useSelector(state => state.movies.favoriteMovies);
   allFavoritesMoviesSnap = [...allFavoritesMovies];
   const dispatch = useDispatch();
 
-  console.log('Previous Scroll Position:', prevScrollPosition);
-
   useEffect(() => {
-    const movieId = locationData.state.movieId;
+    const movieId = locationData.state || locationData.pathname.split('/')[2];
     (async () => {
       setIsFetching(prevState => !prevState);
       const result = await getMovieDetailById(movieId);
+      if (result.Response === "False") {
+        setIsError(prevState => !prevState);
+        setIsFetching(prevState => !prevState);
+      }
       dispatch(getMovieDetails(result));
       const isSelectedMovieInFavorites = allFavoritesMoviesSnap.some(movie => movie.imdbID === result.imdbID);
       setFavoriteBtnValue(isSelectedMovieInFavorites);
@@ -35,7 +38,7 @@ function MovieDetailPage() {
     return () => {
       dispatch(clearMovieDetails());
     }
-  }, [locationData.state.movieId, dispatch]);
+  }, [locationData, dispatch]);
 
   const onFavoriteBtnClick = btnState => {
     if (!btnState) {
@@ -56,12 +59,14 @@ function MovieDetailPage() {
 
   return (
     <>
+      <h2 className={styles['page-header']}>Movie Details</h2>
       <div className={styles['navigation']}>
-        <Link to="/" state={`${prevScrollPosition}`}>&lt; Back</Link>
+        <Link onClick={() => navigate(-1)}>&lt; Back</Link>
         <Link to="/favorites">Favorites</Link>
       </div>
 
       {isFetching || !selectedMovie?.Title ? (
+        isError ? <div className="has-text-centered is-size-3"><strong>Error! No details found</strong></div> :
         <LoadingSpinner />
       ) : (
         <div className={styles['movie-details']}>

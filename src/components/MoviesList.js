@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import MoviesListItem from "./MoviesListItem";
 import { emptyMoviesList } from "../store/slices/moviesSlice";
 import { calcNextPageNumber } from "../helpers";
@@ -7,12 +7,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import LoadingSpinner from "./LoadingSpinner";
 import styles from './MoviesList.module.scss';
+import { clearScrollValue, saveScrollValue } from "../store/slices/scrollSlice";
 
 function MoviesList({ fetchingStatus, movies, totalResults, onBtnClick }) {
   const favoriteMoviesCount = useSelector(state => state.movies.favoriteMovies.length);
   const dispatch = useDispatch();
   const [disabled, setIsDisabled] = useState(true);
-  const scrollRef = useRef();
   const nextPageRef = calcNextPageNumber(totalResults, movies.length);
   const classNameString = `box ${fetchingStatus.error || fetchingStatus.isLoadingNew ? '' : 'grid'}`;
   let renderedContent;
@@ -24,9 +24,17 @@ function MoviesList({ fetchingStatus, movies, totalResults, onBtnClick }) {
     }
   }, [movies.length, totalResults]);
 
-  const linkClickHandler = () => {
+  const movieItemClickHandler = () => {
     const currScrollPosition = document.documentElement.scrollTop;
-    scrollRef.current = currScrollPosition;
+    dispatch(saveScrollValue(currScrollPosition));
+  }
+
+  const trashBtnClickHandler = () => {
+    dispatch(emptyMoviesList());
+  }
+
+  const favoriteBtnClickHandler = () => {
+    dispatch(clearScrollValue());
   }
 
   if (fetchingStatus.error) {
@@ -35,7 +43,7 @@ function MoviesList({ fetchingStatus, movies, totalResults, onBtnClick }) {
     renderedContent = <LoadingSpinner />;
   } else {
     renderedContent = movies.map(movie => (
-      <Link key={movie.imdbID} to={`/details/${movie.imdbID}`} onClick={linkClickHandler} state={{ movieId: movie.imdbID, prevScrollPosition: scrollRef }}>
+      <Link key={movie.imdbID} to={`/details/${movie.imdbID}`} onClick={movieItemClickHandler} state={movie.imdbID}>
         <MoviesListItem poster={movie.Poster} title={movie.Title} year={movie.Year} />
       </Link>
     ));
@@ -46,11 +54,11 @@ function MoviesList({ fetchingStatus, movies, totalResults, onBtnClick }) {
       <div className={styles.navigator}>
         <div>Total Results Found: <strong>{totalResults}</strong></div>
         <div className={styles.navigator__links}>
-          <small className={styles['navigator__links--trash']} onClick={() => dispatch(emptyMoviesList())}>
+          <small className={styles['navigator__links--trash']} onClick={trashBtnClickHandler}>
             <BsFillTrashFill />
           </small>
           <small className={styles['navigator__links--favorites']}>
-            <Link to="/favorites">
+            <Link to="/favorites" onClick={favoriteBtnClickHandler}>
               <BsStar />
               <span className="is-size-5 ml-2">({favoriteMoviesCount})</span>
             </Link>

@@ -9,6 +9,7 @@ import { addMovieToFavorites } from './store/slices/moviesSlice';
 
 function App() {
   const dispatch = useDispatch();
+  const notFoundEl = <div className="has-text-centered is-size-3"><strong>404! Not Found</strong></div>;
 
   useEffect(() => {
     const data = readDataFromLS();
@@ -26,6 +27,7 @@ function App() {
         <Route path='/details'>
           <Route path=':movieId' element={<MovieDetailPage />} />
         </Route>
+        <Route path='*' element={notFoundEl} />
       </Routes>
     </div>
   );
