@@ -1,0 +1,39 @@
+.page-header {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+.navigation {
+  text-align: left;
+  padding: 2rem 0;
+}
+
+.table {
+  width: 75%;
+  margin: 0 auto;
+  text-align: center;
+
+  th, td {
+    border: 1px solid black;
+    padding: .5rem 1rem;
+  }
+
+  th:nth-child(2),
+  td:nth-child(2) {
+    text-align: left;
+  }
+
+  &__head {
+    &--row {
+      background-color: #f2f2f2;
+    }
+  }
+
+  &__body {
+    button {
+      width: 100%;
+      cursor: pointer;
+    }
+  }
+}

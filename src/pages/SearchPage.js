@@ -21,6 +21,8 @@ function SearchPage() {
   const data = useSelector(state => state.movies);
   const dispatch = useDispatch();
 
+  console.log('Scroll To:', locationData.state);
+
   const handleScroll = throttle(() => {
     if (arrowBtnAppearPoint) {
       const currScrollPosition = document.documentElement.scrollTop;
@@ -30,7 +32,7 @@ function SearchPage() {
         setIsArrowBtnVisible(false);
       }
     }
-  }, 500);
+  }, 250);
 
   useEffect(() => {
     window.addEventListener('scroll', handleScroll);

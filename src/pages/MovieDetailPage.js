@@ -19,6 +19,8 @@ function MovieDetailPage() {
   allFavoritesMoviesSnap = [...allFavoritesMovies];
   const dispatch = useDispatch();
 
+  console.log('Previous Scroll Position:', prevScrollPosition);
+
   useEffect(() => {
     const movieId = locationData.state.movieId;
     (async () => {

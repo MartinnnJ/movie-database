@@ -6,6 +6,7 @@ import { BsFillTrashFill, BsStar } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import LoadingSpinner from "./LoadingSpinner";
+import styles from './MoviesList.module.scss';
 
 function MoviesList({ fetchingStatus, movies, totalResults, onBtnClick }) {
   const favoriteMoviesCount = useSelector(state => state.movies.favoriteMovies.length);
@@ -42,13 +43,13 @@ function MoviesList({ fetchingStatus, movies, totalResults, onBtnClick }) {
 
   return (
     <>
-      <div className="navigator">
+      <div className={styles.navigator}>
         <div>Total Results Found: <strong>{totalResults}</strong></div>
-        <div className="links">
-          <small onClick={() => dispatch(emptyMoviesList())}>
+        <div className={styles.navigator__links}>
+          <small className={styles['navigator__links--trash']} onClick={() => dispatch(emptyMoviesList())}>
             <BsFillTrashFill />
           </small>
-          <small>
+          <small className={styles['navigator__links--favorites']}>
             <Link to="/favorites">
               <BsStar />
               <span className="is-size-5 ml-2">({favoriteMoviesCount})</span>
@@ -57,9 +58,7 @@ function MoviesList({ fetchingStatus, movies, totalResults, onBtnClick }) {
         </div>
       </div>
 
-      <div className={classNameString}>
-        {renderedContent}
-      </div>
+      <div className={classNameString}>{renderedContent}</div>
 
       <div className="has-text-centered mb-5">
         {fetchingStatus.isLoadingAdd ? (

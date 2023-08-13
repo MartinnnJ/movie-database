@@ -1,0 +1,32 @@
+.navigator {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  font-size: 1rem;
+  color: grey;
+  margin-bottom: 1rem;
+
+  &__links {
+
+    small {
+      display: inline-block;
+      padding: .5rem 1rem .35rem 1rem;
+      font-size: 2rem;
+      cursor: pointer;
+    }
+
+    &--trash {
+      &:hover {
+        color: black;
+      }
+    }
+
+    &--favorites {
+      a {
+        &:hover {
+          color: #FFD700;
+        }
+      }
+    }
+  }
+}

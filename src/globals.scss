@@ -1,5 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Metal+Mania&display=swap');
 
+$gird-gap: 1rem;
+
 * {
   box-sizing: border-box;
 }
@@ -8,8 +10,6 @@
 *::before {
   box-sizing: inherit;
 }
-
-$gird-gap: 1rem;
 
 .wrapper {
   max-width: 1600px;
@@ -24,32 +24,6 @@ $gird-gap: 1rem;
   form {
     width: 60%;
     margin: 0 auto;
-  }
-}
-
-.navigator {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  font-size: 1rem;
-  color: grey;
-  margin-bottom: 1rem;
-
-  small {
-    display: inline-block;
-    padding: .5rem 1rem .35rem 1rem;
-    font-size: 2rem;
-    cursor: pointer;
-
-    a {
-      &:hover {
-        color: #FFD700;
-      }
-    }
-
-    &:hover {
-      color: black;
-    }
   }
 }
 
