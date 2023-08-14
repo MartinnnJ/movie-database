@@ -1,70 +1,26 @@
-# Getting Started with Create React App
+# Movie Database
+Medior Coderbyte assignment
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## How to start an application
+1. Navigate into root app directory and run `npm install`
+2. Run script `npm start`
 
-## Available Scripts
+## Information
+This app was developed and styled on 1920x1080 resolution screen. So **is NOT mobile responsive**. App was also optimalized only in Google Chrome desktop browser.
 
-In the project directory, you can run:
+## Tech stack
+- App is configured with Webpack (*create-react-app*) and is using **JavaScript ES6+** syntax
+- React v18 with **hooks**
+- **Redux Toolkit** as main state management system
+- **React Router v6.14** for page navigation
+- Styles are powered by open-source component library **BULMA** and **Sass** (.scss syntax) together with *React CSS modules*
+- All movie data are fetching from **OMDb API** via **axios** library
 
-### `npm start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## Features
+- infinite scroll + scroll position remembering (**not always works properly**)
+- scrolling is **throttled** via `lodash.throttle` function for better performance.
+- default poster image if doesn't exist on the server
+- *Go Up* button if user scrolls too much
+- ability to add/remove movie from favorites on its detail page (click on golden star)
+- limited movie title length (`titleLengthReducer` function in `helpers.js` file)
+- `localStorage` is used to persist content of favourite movies (`readDataFromLS`, `writeDataToLS` and `deleteDataInLS` function in `helpers.js` file)

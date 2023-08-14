@@ -3,12 +3,10 @@ import { FiExternalLink } from "react-icons/fi";
 import styles from "./FavoritePage.module.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { removeMovieFromFavorites } from "../store/slices/moviesSlice";
-import LoadingSpinner from "../components/LoadingSpinner";
-import { deleteDataInLS, readDataFromLS } from "../helpers";
+import { deleteDataInLS } from "../helpers";
 
 function FavoritePage() {
   const navigate = useNavigate();
-  const data = readDataFromLS();
   const favoriteMovies = useSelector(state => state.movies.favoriteMovies);
   const dispatch = useDispatch();
 
@@ -26,8 +24,7 @@ function FavoritePage() {
       </div>
 
       {favoriteMovies.length === 0 ? (
-        !data ? <div className="has-text-centered is-size-3"><strong>Nothing to display</strong></div> : 
-        <LoadingSpinner />
+        <div className="has-text-centered is-size-3"><strong>Nothing to display</strong></div>
       ) : (
         <table className={styles.table}>
           <thead className={styles.table__head}>

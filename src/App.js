@@ -6,7 +6,7 @@ import { readDataFromLS } from './helpers';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { addMovieToFavorites } from './store/slices/moviesSlice';
-
+// created by Martin Jancura
 function App() {
   const dispatch = useDispatch();
   const notFoundEl = <div className="has-text-centered is-size-3"><strong>404! Not Found</strong></div>;
